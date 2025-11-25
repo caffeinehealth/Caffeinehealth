@@ -48,6 +48,21 @@ There are two main ways to deploy the project to Vercel:
 	 - Output Directory: `dist`
 	 - (If you didn't rely on `vercel.json`) Root Directory: set to `caffeine-health`
 
+	If you prefer to keep configuration in the repo (recommended if you can't or won't change settings in the Vercel Dashboard), we added `vercel.json` with `builds` pointing to `caffeine-health/package.json`. That ensures Vercel builds and deploys from the correct subfolder and serves static assets correctly.
+
+	Quick steps after the `vercel.json` change:
+	1) Commit and push changes to GitHub:
+	```powershell
+	cd "c:\Users\aditya kumar\OneDrive\Documents\CAFFINE NEW\caffeine-health"
+	git add .
+	git commit -m "Update vercel.json for subfolder, add vite config, lazy-load chart"
+	git push origin main
+	```
+	2) Redeploy on Vercel Dashboard (or push triggers automatic deploy):
+		- Vercel Dashboard → Projects → your project → Deployments → Redeploy (or waiting for a new push will create a new deployment)
+
+	3) Verify the site in the browser and check DevTools for any errors (no MIME errors or 404s for `assets/*.js`).
+
 	Then re-deploy the latest commit to rebuild the static site.
 
 Notes:
