@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { Calendar, TrendingDown, TrendingUp, Activity, Settings, Download, Trash2, Plus, BarChart3, Coffee } from 'lucide-react';
+
+// Lazy-load the chart to reduce initial bundle size
+const WeightTrendChart = React.lazy(() => import('./components/WeightTrendChart'));
 
 // Provide a simple fallback for `window.storage` using localStorage for local dev
 const storage = (typeof window !== 'undefined' && window.storage && window.storage.get && window.storage.set && window.storage.delete)
@@ -475,37 +477,9 @@ Powered by Caffeine Health by aditya
             <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8 border-2 border-amber-200">
               <h2 className="text-xl sm:text-2xl font-bold text-amber-900 mb-4 sm:mb-6">Weight Trend Chart</h2>
               {getFilteredData().length > 0 ? (
-                <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={getFilteredData()}>
-                    <defs>
-                      <linearGradient id="colorWeight" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#d97706" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#d97706" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#fbbf24" />
-                    <XAxis 
-                      dataKey="date" 
-                      tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
-                      angle={window.innerWidth < 640 ? -45 : 0}
-                      textAnchor={window.innerWidth < 640 ? "end" : "middle"}
-                      height={window.innerWidth < 640 ? 60 : 30}
-                    />
-                    <YAxis 
-                      tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
-                      domain={['dataMin - 2', 'dataMax + 2']}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        background: '#fffbeb', 
-                        border: '2px solid #d97706',
-                        borderRadius: '8px',
-                        fontSize: window.innerWidth < 640 ? '12px' : '14px'
-                      }} 
-                    />
-                    <Area type="monotone" dataKey="weight" stroke="#d97706" strokeWidth={3} fillOpacity={1} fill="url(#colorWeight)" />
-                  </AreaChart>
-                </ResponsiveContainer>
+                <Suspense fallback={<div className="text-center text-amber-600 py-12 text-sm sm:text-base">Loading chart...</div>}>
+                  <WeightTrendChart data={getFilteredData()} />
+                </Suspense>
               ) : (
                 <p className="text-center text-amber-600 py-12 text-sm sm:text-base">No data available for the selected range</p>
               )}

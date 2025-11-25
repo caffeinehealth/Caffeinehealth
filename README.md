@@ -42,6 +42,14 @@ There are two main ways to deploy the project to Vercel:
 	- Run the included script: `.\	ools\deploy.ps1` or `.\deploy.ps1` (PowerShell)
 	- Or use `npx vercel --prod` to deploy to production and get a site URL.
 
+	Important: If your project is inside a subfolder (e.g., `caffeine-health`), Vercel needs to build from that subfolder. We already added a `vercel.json` config to point to `caffeine-health/package.json`. If you imported the project and the site shows a blank screen, redeploy the project after confirming the following in the Vercel Dashboard:
+
+	 - Build Command: `npm run build`
+	 - Output Directory: `dist`
+	 - (If you didn't rely on `vercel.json`) Root Directory: set to `caffeine-health`
+
+	Then re-deploy the latest commit to rebuild the static site.
+
 Notes:
 - If you want continuous automatic deploys on push to `main`, set up the Vercel GitHub integration or use the GitHub Action workflow that we included (`.github/workflows/deploy-vercel.yml`) — set the following repo secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` (obtainable from Vercel Dashboard).
 - The Vercel config `vercel.json` is included and configures your app as a static build with SPA routing.
