@@ -1,5 +1,12 @@
 {
   "version": 2,
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
+{
+  "version": 2,
   "builds": [
     {
       "src": "caffeine-health/package.json",
