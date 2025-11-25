@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add small customizations if needed */
+:root {
+  --amber-900: #92400e;
+  --amber-50: #fff7ed;
+}
+body { @apply bg-amber-50; }
